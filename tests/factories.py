@@ -24,11 +24,35 @@ from service.models import Product, Category
 
 class ProductFactory(factory.Factory):
     """Creates fake products for testing"""
-
+    
     class Meta:
         """Maps factory to data model"""
-
         model = Product
 
     id = factory.Sequence(lambda n: n)
-   ## Add code to create Fake Products 
+    
+    # Using FuzzyChoice to generate random product names
+    name = FuzzyChoice(
+        choices=[
+            "Hat", "Pants", "Shirt", "Apple", "Banana", 
+            "Pots", "Towels", "Ford", "Chevy", "Hammer", "Wrench"
+        ]
+    )
+    
+    # Faker used to generate a fake description
+    description = factory.Faker("text")
+    
+    # FuzzyDecimal for price within the range of 0.5 to 2000.0 with 2 decimal places
+    price = FuzzyDecimal(0.5, 2000.0, 2)
+    
+    # FuzzyChoice for availability, either True or False
+    available = FuzzyChoice(choices=[True, False])
+    
+    # FuzzyChoice for random category selection
+    category = FuzzyChoice(
+        choices=[
+            Category.UNKNOWN, Category.CLOTHS, Category.FOOD, 
+            Category.HOUSEWARES, Category.AUTOMOTIVE, Category.TOOLS
+        ]
+    )
+
